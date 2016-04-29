@@ -1,0 +1,43 @@
+#路径只是例子
+1.python 安装ctypes包
+2.准备一个”*.c”文件(包涵依赖”＃include “*.h””文件或不依赖”.h”文件)
+3.gcc编译”*.c”文件 (“*.c”和“*.h”文件在最下方可以看到)
+	方式一：不包含依赖的 include文件
+		gcc -fPIC 1.c -o example.so
+		生成so文件在当前目录下
+	方式二：包含依赖的 include文件
+		gcc -fPIC 1.c -o example.so -I /Users/mac-li/Documents/C_package
+		生成so文件在当前目录下
+	命令讲解：
+		1.-fPIC：生成so文件
+		2.-I /Users/mac-li/Documents/C_package：所有依赖的“.h”所在目录
+		3.注意：”.h”文件中需要有main函数 不然会报以下错误：
+			“Undefined symbols for architecture x86_64:
+  				"_main", referenced from:
+     				implicit entry/start for main executable”
+
+
+4.编写python脚本：
+
+	>>> import ctypes
+	>>> so = ctypes.CDLL("/Users/mac-li/Documents/C_package/linhello.so")
+	>>> so.test()
+	输出：
+		Hello World!!
+		0
+5.*.c文件
+	#include "stdio.h"
+	#include “2.h” (包涵依赖文件)
+
+	void fun()
+	{
+        printf("hello world!\r\n");
+	}
+
+6.*.h文件
+
+	int main()
+	{
+        printf("haha");
+        return 0;
+	}
